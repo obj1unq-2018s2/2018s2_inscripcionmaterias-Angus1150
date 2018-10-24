@@ -1,0 +1,32 @@
+import estudiante.*
+import carrera.*
+import materia.*
+import inscripcion.*
+// auto-generated at 23/10/2018 19:26:38
+describe "Inscripciones" {
+	const tpi=new Carrera()
+	const mate1=new Materia(esDeAnio=1, alumnosInsc=[], carrera= tpi, doyCreditos=10, cupo=1, listaEspera=[])
+	const alu1= new Estudiante(materiasAprobadas=[],creditos=0,carreras=[tpi])
+	const alu2= new Estudiante(materiasAprobadas=[],creditos=0,carreras=[tpi])
+	
+	
+	test "anotar alumno"{
+		mate1.anotarAlumno(alu1)
+		assert.equals([alu1],mate1.alumnosInsc())
+	}
+	test "estudiante aprobo una materia"{
+		mate1.aprobo(alu1)
+		assert.equals([mate1],alu1.materiasAprobadas())
+		assert.equals([],mate1.alumnosInsc())
+		mate1.aprobo(alu1)
+		assert.equals([mate1], alu1.materiasAprobadas())
+	}
+	test "lista de espera"{
+		mate1.anotarAlumno(alu2)
+		assert.equals([alu2], mate1.listaEspera())
+	}
+	test "dar de baja"{
+		mate1.darDeBaja(alu1)
+		assert.equals([alu2], mate1.alumnosInsc())
+	}
+}
