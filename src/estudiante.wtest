@@ -2,52 +2,51 @@ import estudiante.*
 import carrera.*
 import materia.*
 import inscripcion.*
+
 // auto-generated at 23/10/2018 19:26:38
 describe "Inscripciones" {
-	
-	const lds=new Carrera()
-	const tpi=new Carrera(materias=[])
-	
-	const intro=new MateriaSinPreReq(esDeAnio=1, alumnosInsc=[],esDeCarrera=null, doyCreditos=10, cupo=2, listaEspera=[])
-	const obj1=new MateriaPorAnio(esDeAnio=2, alumnosInsc=[],esDeCarrera=null, doyCreditos=15, cupo=4, listaEspera=[])
-	const mate1=new MateriaConCreditos(esDeAnio=1, alumnosInsc=[],esDeCarrera=null,doyCreditos=10, cupo=1, listaEspera=[], credNecesarios=10)
-	const datos=new MateriaCorrelativa(esDeAnio=2, alumnosInsc=[],esDeCarrera=null,doyCreditos=8, cupo=3, listaEspera=[], mateNecesarias=[mate1,intro])
 
-	const alu1= new Estudiante(materiasInsc=[],materiasEnEspera=[],materiasAprobadas=[],creditos=0,carreras=[tpi],anioCursada=2)
-	const alu2= new Estudiante(materiasInsc=[],materiasEnEspera=[],materiasAprobadas=[],creditos=0,carreras=[tpi],anioCursada=1)
-	
-	fixture{//era necesario
+	const lds = new Carrera()
+	const tpi = new Carrera(materias = [])
+	// TODO Estás inicializando variables que podrían no ser necesarias, como alumnosInsc, esto complica tu código innecesariamente.	
+	const intro = new MateriaSinPreReq(esDeAnio = 1, alumnosInsc = [], esDeCarrera = null, doyCreditos = 10, cupo = 2, listaEspera = [])
+	const obj1 = new MateriaPorAnio(esDeAnio = 2, alumnosInsc = [], esDeCarrera = null, doyCreditos = 15, cupo = 4, listaEspera = [])
+	const mate1 = new MateriaConCreditos(esDeAnio = 1, alumnosInsc = [], esDeCarrera = null, doyCreditos = 10, cupo = 1, listaEspera = [], credNecesarios = 10)
+	const datos = new MateriaCorrelativa(esDeAnio = 2, alumnosInsc = [], esDeCarrera = null, doyCreditos = 8, cupo = 3, listaEspera = [], mateNecesarias = [ mate1, intro ])
+	const alu1 = new Estudiante(materiasInsc = [], materiasEnEspera = [], materiasAprobadas = [], creditos = 0, carreras = [ tpi ], anioCursada = 2)
+	const alu2 = new Estudiante(materiasInsc = [], materiasEnEspera = [], materiasAprobadas = [], creditos = 0, carreras = [ tpi ], anioCursada = 1)
+
+	fixture { // era necesario
 		intro.carrera(tpi)
 		obj1.carrera(tpi)
 		mate1.carrera(tpi)
 		datos.carrera(tpi)
-		
 	}
-	
-	
-	
-	test"anotar y ya curso"{
+
+	test"anotar y ya curso" {
 		intro.anotarAlumno(alu1)
-		assert.equals([alu1],intro.alumnosInsc())
+		assert.equals([ alu1 ], intro.alumnosInsc())
 		intro.aprobo(alu1)
 		assert.notThat(intro.puedeCursar(alu1))
 	}
-	test "anotar correlativa"{
+
+	test "anotar correlativa" {
 		intro.anotarAlumno(alu1)
 		intro.aprobo(alu1)
 		datos.anotarAlumno(alu1)
 		assert.notThat(datos.puedeCursar(alu1))
 	}
 
-	test "inscribir y lista de espera"{
-		//lista de espera
+	test "inscribir y lista de espera" {
+		// lista de espera
 		intro.anotarAlumno(alu1)
 		intro.anotarAlumno(alu2)
 		intro.aprobo(alu1)
-		intro.aprobo(alu2)//consiguieron los creditos necesarios
-		mate1.anotarAlumno(alu1) //el primero tiene cupo y el segundo va a lista de espera
+		intro.aprobo(alu2) // consiguieron los creditos necesarios
+		mate1.anotarAlumno(alu1) // el primero tiene cupo y el segundo va a lista de espera
 		mate1.anotarAlumno(alu2)
-		assert.equals([alu2], mate1.listaEspera())
+		assert.equals([ alu2 ], mate1.listaEspera())
 	}
-	
+
 }
+
